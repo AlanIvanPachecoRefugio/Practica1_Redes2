@@ -1,8 +1,7 @@
 package com.tienda.servidor;
 
 /**
- * Representa un solo tipo de producto dentro del carrito de un usuario.
- * Por ejemplo: 3 unidades del producto con id=1 (las laptops).
+ * Representa un solo tipo de producto en el carrito, para escoger,stock y dar ID del producto
  */
 public class Carrito {
 
