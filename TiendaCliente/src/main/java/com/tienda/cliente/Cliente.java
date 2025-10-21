@@ -14,15 +14,16 @@ import java.util.Map;
 import java.util.Scanner;
 
 /*
- * NOTA: Para que este archivo funcione, debes tener las clases de apoyo
- * (Producto.java, Request.java, Response.java, ItemDetalle.java)
- * en el mismo paquete (com.tienda.cliente).
+ * NOTA: Menu principal y vista que tendrá el cliente
+pruebaaa12
+
+@ ivano
  */
 public class Cliente {
 
     public static void main(String[] args) {
-        final String HOST = "127.0.0.1"; // IP del servidor (tu propia maquina)
-        final int PORT = 9999;           // Mismo puerto que el servidor
+        final String HOST = "127.0.0.1"; // IP del sever
+        final int PORT = 9999;           
 
         try (
             Socket socket = new Socket(HOST, PORT);
@@ -33,7 +34,7 @@ public class Cliente {
             System.out.println("Conectado al servidor de la tienda.");
             Gson gson = new Gson();
 
-            // 1. Recibir y mostrar catalogo inicial
+            // 1. Recibe y muestra el catalogo usando JSON  usamos la dependencia GSON
             String catalogoJson = in.readLine();
             Type tipoListaProductos = new TypeToken<List<Producto>>(){}.getType();
             List<Producto> catalogo = gson.fromJson(catalogoJson, tipoListaProductos);
@@ -42,7 +43,7 @@ public class Cliente {
             catalogo.forEach(p -> System.out.println(p));
             System.out.println("----------------------------\n");
 
-            // 2. Bucle del menu principal
+            // Menu principal
             String userInput;
             while (true) {
                 System.out.println("\n------ MENU PRINCIPAL -----");
@@ -56,7 +57,7 @@ public class Cliente {
                 userInput = scanner.nextLine();
 
                 if ("5".equals(userInput)) {
-                    break; // Salir del bucle para cerrar la conexion
+                    break; // Cierre de conexion
                 }
 
                 if ("1".equals(userInput)) {
@@ -107,9 +108,9 @@ public class Cliente {
                         Response response = gson.fromJson(serverResponseJson, Response.class);
 
                         if ("OK".equals(response.getStatus())) {
-                            System.out.println("✅ " + response.getData());
+                            System.out.println("Aprobado " + response.getData());
                         } else {
-                            System.err.println("❌ Error: " + response.getData());
+                            System.err.println("Error: " + response.getData());
                         }
 
                     } catch (NumberFormatException e) {
@@ -173,10 +174,10 @@ public class Cliente {
                 }
             }
 
-            System.out.println("Gracias por visitar la tienda. Desconectando...");
+            System.out.println("Gracias por su visita.");
 
         } catch (IOException e) {
-            System.err.println("Error de comunicacion con el servidor: " + e.getMessage());
+            System.err.println("Error con la comunicacion al servidor " + e.getMessage());
         }
     }
 }

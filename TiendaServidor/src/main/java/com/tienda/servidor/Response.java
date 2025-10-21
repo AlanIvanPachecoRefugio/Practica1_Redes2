@@ -1,11 +1,10 @@
 package com.tienda.servidor;
 
-// Esta clase es la plantilla para cualquier respuesta que el servidor envie.
+// Esta clase para la rspuesta que de el servidor
 public class Response {
-    private String status; // "OK", "ERROR"
-    private Object data;   // Los datos de la respuesta, ej: la lista de productos o un mensaje de error.
+    private String status; // Vista de Ok o Error
+    private Object data;   // Respuyestas de visualizacion como lista de producots o algun error
 
-    // Getters y Setters
     public String getStatus() {
         return status;
     }

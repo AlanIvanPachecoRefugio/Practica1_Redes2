@@ -1,4 +1,4 @@
-package com.tienda.servidor; // O com.tienda.cliente en el otro proyecto
+package com.tienda.servidor;
 
 public class ItemDetalle {
     private String nombreProducto;
@@ -6,7 +6,7 @@ public class ItemDetalle {
     private double precioUnitario;
     private double subtotal;
 
-    // Se necesita un constructor vacío para que Gson funcione correctamente.
+    // Constructor vacio para que se ocupe GSON
     public ItemDetalle() {}
 
     public ItemDetalle(String nombreProducto, int cantidad, double precioUnitario) {
@@ -16,7 +16,7 @@ public class ItemDetalle {
         this.subtotal = cantidad * precioUnitario;
     }
 
-    // Getters para que Gson pueda leer los datos
+    // Getters para que se puedan leer datos por parte de GSon
     public String getNombreProducto() { return nombreProducto; }
     public int getCantidad() { return cantidad; }
     public double getPrecioUnitario() { return precioUnitario; }

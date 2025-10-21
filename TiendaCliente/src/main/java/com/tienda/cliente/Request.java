@@ -1,8 +1,7 @@
 package com.tienda.cliente;
 
 /**
- * Esta clase es la plantilla para cualquier peticion que el cliente envie.
- * Es una copia de la que existe en el servidor.
+ * Copia por parte del servidor, donde se vera lo que el usuario pida
  */
 public class Request {
     private String action;

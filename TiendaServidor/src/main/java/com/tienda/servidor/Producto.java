@@ -1,12 +1,11 @@
 package com.tienda.servidor;
 
 /**
- * Esta clase es el "molde" para cada producto de nuestra tienda.
- * Contiene toda la informacion que un producto necesita.
+ * Informacion para uso del catalogo de la tienda
  */
 public class Producto {
 
-    // Atributos (las caracteristicas de un producto)
+    // Atributos
     private int id;
     private String nombre;
     private String marca;
@@ -14,7 +13,7 @@ public class Producto {
     private double precio;
     private int stock;
 
-    // Constructor: Se usa para crear nuevos objetos "Producto" con sus datos.
+    // Constructor de producto
     public Producto(int id, String nombre, String marca, String tipo, double precio, int stock) {
         this.id = id;
         this.nombre = nombre;
@@ -25,9 +24,7 @@ public class Producto {
     }
 
     // --- Metodos Getters y Setters ---
-    // Los "Getters" nos permiten LEER el valor de un atributo desde fuera de la clase.
-    // Los "Setters" nos permiten CAMBIAR el valor de un atributo desde fuera.
-
+    // Leer y cambiar valores de los productos 
     public int getId() {
         return id;
     }
@@ -76,7 +73,7 @@ public class Producto {
         this.stock = stock;
     }
     
-    // Este metodo es util para imprimir la informacion del producto facilmente.
+    // Impresion de la informacion del producto
     @Override
     public String toString() {
         return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", stock=" + stock + '}';

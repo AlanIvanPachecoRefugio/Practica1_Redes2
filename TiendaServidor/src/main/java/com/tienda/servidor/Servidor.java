@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/*NOTA: Parte del servidor de alta de productos con el format:  Nombre, Marca, Categiría, Preciio y stock*/
+
 public class Servidor {
 
     public static void main(String[] args) {
@@ -18,18 +20,15 @@ public class Servidor {
         catalogo.add(new Producto(5, "SSD 1TB NVMe", "Kingston", "Almacenamiento", 1800.0, 40));
 
         try (ServerSocket serverSocket = new ServerSocket(9999)) {
-            System.out.println("✅ Servidor de la tienda iniciado en el puerto 9999. Esperando clientes...");
+            System.out.println("Servidor de la tienda iniciado en el puerto 9999. Esperando clientes...");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("🔌 ¡Cliente conectado desde " + clientSocket.getInetAddress());
+                System.out.println("¡Cliente conectado desde " + clientSocket.getInetAddress());
 
-                // --- CAMBIO AQUÍ ---
-                // Creamos un nuevo "asistente" (ManejadorC) para este cliente.
+                // ManejadorC, implementacion
                 ManejadorC manejadorCliente = new ManejadorC(clientSocket, catalogo);
 
-                // --- CAMBIO AQUÍ ---
-                // Iniciamos el asistente en un nuevo hilo.
                 new Thread(manejadorCliente).start();
             }
         } catch (IOException e) {

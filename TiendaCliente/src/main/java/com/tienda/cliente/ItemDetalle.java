@@ -6,7 +6,7 @@ public class ItemDetalle {
     private double precioUnitario;
     private double subtotal;
 
-    // Se necesita un constructor vacío para que Gson funcione correctamente.
+    // Constructr vacio asignado al GSON
     public ItemDetalle() {}
 
     public ItemDetalle(String nombreProducto, int cantidad, double precioUnitario) {

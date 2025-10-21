@@ -15,7 +15,7 @@ public class ManejadorC implements Runnable {
 
     private final Socket clientSocket;
     private final List<Producto> catalogo;
-    // Esta lista guardara los productos del carrito para este cliente especifico.
+    // Por cada cliente se guarda la lista de productos
     private final List<Carrito> carritoDeEsteCliente = new ArrayList<>();
 
     public ManejadorC(Socket socket, List<Producto> catalogo) {
@@ -31,12 +31,12 @@ public class ManejadorC implements Runnable {
         ) {
             Gson gson = new Gson();
 
-            // 1. Envio del catalogo inicial al conectarse el cliente.
+            // 1. Envio del catalogo al cliente
             System.out.println("Enviando catalogo al cliente...");
             String catalogoJson = gson.toJson(catalogo);
             out.println(catalogoJson);
 
-            // 2. Bucle principal para escuchar y procesar peticiones del cliente.
+            // 2. Escucha y procesa al cliente
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Peticion recibida del cliente: " + inputLine);
@@ -46,16 +46,15 @@ public class ManejadorC implements Runnable {
 
                 switch (request.getAction()) {
                     
-                    // ... dentro del switch
 case "finalizar_compra":
     try {
         if (carritoDeEsteCliente.isEmpty()) {
             response.setStatus("ERROR");
             response.setData("Tu carrito está vacío, no se puede finalizar la compra.");
-            break; // Sale del switch
+            break; 
         }
 
-        // Usamos un StringBuilder para construir el ticket de forma eficiente.
+        // Builder para mostrar el ticket
         StringBuilder ticket = new StringBuilder();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime ahora = LocalDateTime.now();
@@ -67,7 +66,7 @@ case "finalizar_compra":
         ticket.append(String.format("%-20s | %-5s | %s%n", "PRODUCTO", "CANT", "SUBTOTAL"));
         ticket.append("----------------------------------------\n");
 
-        // Reutilizamos la lógica de "ver_carrito" para obtener los detalles
+        // Reutilizacion de ver carrito para el recuento y el ticket
         for (Carrito item : carritoDeEsteCliente) {
             for (Producto p : catalogo) {
                 if (p.getId() == item.getProductoId()) {
@@ -83,32 +82,30 @@ case "finalizar_compra":
         ticket.append(String.format("TOTAL: $%.2f%n", totalCompra));
         ticket.append("--- Gracias por tu compra ---\n");
 
-        // Limpiamos el carrito del cliente después de la compra.
+        // Limpiamos el carrito del cliente
         carritoDeEsteCliente.clear();
 
         response.setStatus("OK");
-        response.setData(ticket.toString()); // Enviamos el ticket como un simple String.
+        response.setData(ticket.toString()); // Se envia el ticket (String)
 
     } catch (Exception e) {
         response.setStatus("ERROR");
         response.setData("Ocurrió un error al finalizar la compra: " + e.getMessage());
     }
     break;
-                    
-
                     case "ver_carrito":
                         try {
-                            // Preparamos una lista detallada para la respuesta.
+                            // Lista detalle con respuesta
                             List<ItemDetalle> detallesCarrito = new ArrayList<>();
                             
-                            // Recorremos el carrito simple del cliente (que solo tiene IDs y cantidades).
+                            // Recorrido del carrito de clientes que contiene ID y stock
                             for (Carrito item : carritoDeEsteCliente) {
-                                // Por cada item, buscamos el producto completo en el catálogo.
+                                // Por cada articulo se busca en el catalogo 
                                 for (Producto p : catalogo) {
                                     if (p.getId() == item.getProductoId()) {
-                                        // Creamos un objeto detallado y lo agregamos a la lista.
+                                        // Creamos un objeto detallado y se agrega a la lista
                                         detallesCarrito.add(new ItemDetalle(p.getNombre(), item.getCantidad(), p.getPrecio()));
-                                        break; // Encontramos el producto, pasamos al siguiente item del carrito.
+                                        break; // Una vez encontrado el producto se agrega y pasa al siguiente producto
                                     }
                                 }
                             }
@@ -140,15 +137,14 @@ case "finalizar_compra":
 
                     case "agregar_carrito":
                         try {
-                            // --- INICIO DE LA CORRECCIÓN ---
-                            // 1. Verificamos que el payload sea un Mapa. Es mas seguro que forzar un tipo especifico.
+                            // Se verifica el payload en forma de mapa para facilidad en tipo especifico 
                             if (!(request.getPayload() instanceof java.util.Map)) {
                                 throw new Exception("El payload debe ser un objeto con productoId y cantidad.");
                             }
                             
                             java.util.Map<String, Object> payload = (java.util.Map<String, Object>) request.getPayload();
                             
-                            // 2. Extraemos los valores como Number, que es mas generico y seguro que Double.
+                            // extraemos valores de Number
                             Object idObj = payload.get("productoId");
                             Object cantObj = payload.get("cantidad");
 
@@ -158,9 +154,7 @@ case "finalizar_compra":
 
                             int productoId = ((Number) idObj).intValue();
                             int cantidad = ((Number) cantObj).intValue();
-                            // --- FIN DE LA CORRECCIÓN ---
 
-                            // El resto de la logica (que ya estaba bien) permanece igual.
                             synchronized (catalogo) {
                                 Producto productoSeleccionado = null;
                                 for (Producto p : catalogo) {
@@ -185,7 +179,6 @@ case "finalizar_compra":
                             }
                         } catch (Exception e) {
                             response.setStatus("ERROR");
-                            // Ahora el mensaje de error es un poco mas util.
                             response.setData("Payload incorrecto o invalido: " + e.getMessage());
                         }
                         break;
@@ -196,17 +189,17 @@ case "finalizar_compra":
                         break;
                 }
                 
-                // 3. Enviamos la respuesta final al cliente.
+                // 3. Envio de respuesta final al cliente
                 out.println(gson.toJson(response));
             }
 
         } catch (IOException e) {
-            // Este error suele ocurrir si el cliente se desconecta de forma abrupta.
+            // Si el cliente se desconecta de forma anormal, sale este error
             System.err.println("Cliente desconectado inesperadamente: " + e.getMessage());
         } finally {
             try {
                 clientSocket.close();
-                System.out.println("🔌 Conexion con el cliente cerrada.");
+                System.out.println("Conexion con el cliente cerrada.");
             } catch (IOException e) {
                 System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
             }

@@ -1,11 +1,11 @@
 package com.tienda.servidor;
 
-// Esta clase es la plantilla para cualquier peticion que el cliente envie.
+// Esta clase para cualquiero peticion que el cleinte pida
 public class Request {
-    private String action; // Ej: "listar_productos", "agregar_carrito"
-    private Object payload; // Datos adicionales, ej: el ID de un producto
+    private String action; // Accion, ej: agregar_carrito
+    private Object payload; // Datos principels como el ID
 
-    // Getters y Setters para poder acceder y modificar los atributos.
+    // Getters y Setters para modificar los atributos
     public String getAction() {
         return action;
     }
