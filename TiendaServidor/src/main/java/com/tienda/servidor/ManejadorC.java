@@ -35,7 +35,6 @@ public class ManejadorC implements Runnable {
             System.out.println("Enviando catalogo al cliente...");
             String catalogoJson = gson.toJson(catalogo);
             out.println(catalogoJson);
-
             // 2. Escucha y procesa al cliente
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -50,7 +49,7 @@ case "finalizar_compra":
     try {
         if (carritoDeEsteCliente.isEmpty()) {
             response.setStatus("ERROR");
-            response.setData("Tu carrito está vacío, no se puede finalizar la compra.");
+            response.setData("Tu carrito esta vacio, no se puede finalizar la compra.");
             break; 
         }
 
@@ -60,7 +59,7 @@ case "finalizar_compra":
         LocalDateTime ahora = LocalDateTime.now();
         double totalCompra = 0;
 
-        ticket.append("--- TICKET DE COMPRA ---\n");
+        ticket.append("---- TICKET DE COMPRA ----\n");
         ticket.append("Fecha: ").append(dtf.format(ahora)).append("\n");
         ticket.append("----------------------------------------\n");
         ticket.append(String.format("%-20s | %-5s | %s%n", "PRODUCTO", "CANT", "SUBTOTAL"));
@@ -80,7 +79,7 @@ case "finalizar_compra":
 
         ticket.append("----------------------------------------\n");
         ticket.append(String.format("TOTAL: $%.2f%n", totalCompra));
-        ticket.append("--- Gracias por tu compra ---\n");
+        ticket.append("---- Gracias por tu compra ----\n");
 
         // Limpiamos el carrito del cliente
         carritoDeEsteCliente.clear();
@@ -90,7 +89,7 @@ case "finalizar_compra":
 
     } catch (Exception e) {
         response.setStatus("ERROR");
-        response.setData("Ocurrió un error al finalizar la compra: " + e.getMessage());
+        response.setData("Ocurrio un error al finalizar la compra: " + e.getMessage());
     }
     break;
                     case "ver_carrito":
@@ -131,7 +130,7 @@ case "finalizar_compra":
                             response.setData(productosFiltrados);
                         } catch (Exception e) {
                             response.setStatus("ERROR");
-                            response.setData("Datos de payload invalidos para la accion.");
+                            response.setData("Datos de pago invalidos.");
                         }
                         break;
 
@@ -139,7 +138,7 @@ case "finalizar_compra":
                         try {
                             // Se verifica el payload en forma de mapa para facilidad en tipo especifico 
                             if (!(request.getPayload() instanceof java.util.Map)) {
-                                throw new Exception("El payload debe ser un objeto con productoId y cantidad.");
+                                throw new Exception("El pago debe de ser un productoID y cantidad.");
                             }
                             
                             java.util.Map<String, Object> payload = (java.util.Map<String, Object>) request.getPayload();
