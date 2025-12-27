@@ -47,7 +47,7 @@ public class Cliente {
             String userInput;
             while (true) {
                 System.out.println("\n------ MENU PRINCIPAL -----");
-                System.out.println("1. Listar artIculos por tipo");
+                System.out.println("1. Buscar productos por tipo");
                 System.out.println("2. Agregar articulo al carrito");
                 System.out.println("3. Ver mi carrito");
                 System.out.println("4. Finalizar Compra");
@@ -61,7 +61,7 @@ public class Cliente {
                 }
 
                 if ("1".equals(userInput)) {
-                    System.out.print("Introduce el tipo de articulo (Ej: Electronica, Accesorios): ");
+                    System.out.print("Introduce el tipo de articulo (Ej: Electronica, muebles, etc...): ");
                     String tipo = scanner.nextLine();
 
                     Request request = new Request();
@@ -94,7 +94,15 @@ public class Cliente {
                         int id = Integer.parseInt(scanner.nextLine());
                         System.out.print("Introduce la cantidad: ");
                         int cantidad = Integer.parseInt(scanner.nextLine());
-
+                        
+                        //Correccion
+                        
+                        if (cantidad <= 0) {
+                        System.out.println("ERROR: La cantidad debe ser un numero positivo mayor a 0.");
+                        System.out.println("-> Operacion cancelada.");
+                         continue; 
+                           }
+                        
                         Map<String, Integer> payload = new HashMap<>();
                         payload.put("productoId", id);
                         payload.put("cantidad", cantidad);
