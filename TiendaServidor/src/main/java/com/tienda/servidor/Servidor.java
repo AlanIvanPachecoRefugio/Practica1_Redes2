@@ -9,6 +9,8 @@ import java.util.List;
 
 /*NOTA: Parte del servidor de alta de productos con el format:  Nombre, Marca, Categiría, Preciio y stock*/
 
+
+//Lista de catalogo
 public class Servidor {
 
     public static void main(String[] args) {
